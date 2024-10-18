@@ -6,23 +6,21 @@ const EcocmersCard = {
 };
 
 const init = () => {
-    // defaul color
-    const prevColor = 'blue';
+    let prevColor = 'blue',
+        animate = true;
 
-    // change color Function
     const changeColor = event => {
-        // get color attr from clicked color
+        if (!animate) return;
+
         const color = event.target.getAttribute('color'),
-            // select coresponding shoe gradient and prevGradient of that color
             shoe = document.querySelector(`.shoe[color="${color}"]`),
             gradient = document.querySelector(`.gradient[color="${color}"]`),
             prevGradient = document.querySelector(
                 `.gradient[color="${prevColor}"]`
             );
 
-        // document.body.style.background = `linear-gradient(45deg, ${color}, ${prevColor})`;
         document.body.setAttribute('primary', color);
-        // remove active from currenly active color
+
         EcocmersCard.colors.forEach(color => color.classList.remove('active'));
 
         event.target.classList.add('active');
@@ -37,12 +35,30 @@ const init = () => {
 
         prevGradient.classList.add('behind');
         gradient.classList.add('display');
+
+        animate = false;
+        prevColor = color;
+        setTimeout(() => (animate = true), 800);
     };
 
-    // add event listener on all color
+    const changeSize = event => {
+        EcocmersCard.size.forEach(size => size.classList.remove('active'));
+        event.target.classList.add('active');
+    };
+
     EcocmersCard.colors.forEach(color =>
         color.addEventListener('click', changeColor)
     );
+
+    EcocmersCard.size.forEach(size =>
+        size.addEventListener('click', changeSize)
+    );
+
+    const heightInfo = document
+        .querySelector('.info')
+        .getBoundingClientRect().height;
+
+    document.querySelector('.shoe-bacground').style.height = `${heightInfo}px`;
 };
 
 window.addEventListener('DOMContentLoaded', init);
