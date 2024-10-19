@@ -1,19 +1,17 @@
-// Object to store references to DOM elements
-const EcocmersCard = {
-    colors: document.querySelectorAll('.color'),  // Color selection elements
-    shoe: document.querySelectorAll('.shoe'),  // Shoe image elements
-    gradients: document.querySelectorAll('.gradient'),  // Gradient background elements
-    size: document.querySelectorAll('.size'),  // Size selection elements
-};
+// Importar referencias a elementos DOM
 
-// Initialization function
+import { ELEMENT_ECOMMERSCARD } from './elementDom.js';
+
+// Función de inicialización
 const init = () => {
+    const { colors, gradients, shoes, sizes } = ELEMENT_ECOMMERSCARD;
+
     let prevColor = 'blue',
         animate = true;
 
-    // Function to handle color change
+    // Función para manejar el cambio de color.
     const changeColor = event => {
-        if (!animate) return;  // If animation is in progress, do nothing
+        if (!animate) return; // Si la animación está en curso, no haga nada
 
         const color = event.target.getAttribute('color'),
             shoe = document.querySelector(`.shoe[color="${color}"]`),
@@ -24,15 +22,15 @@ const init = () => {
 
         document.body.setAttribute('primary', color);
 
-        EcocmersCard.colors.forEach(color => color.classList.remove('active'));
+        colors.forEach(color => color.classList.remove('active'));
 
         event.target.classList.add('active');
 
-        EcocmersCard.shoe.forEach(shoe => shoe.classList.remove('show'));
+        shoes.forEach(shoe => shoe.classList.remove('show'));
 
         shoe.classList.add('show');
 
-        EcocmersCard.gradients.forEach(gradient =>
+        gradients.forEach(gradient =>
             gradient.classList.remove('behind', 'display')
         );
 
@@ -44,19 +42,15 @@ const init = () => {
         setTimeout(() => (animate = true), 800);
     };
 
-    // Function to handle size change
+    // Función para manejar el cambio de tamaño
     const changeSize = event => {
-        EcocmersCard.size.forEach(size => size.classList.remove('active'));  // Remove 'active' class from all size elements
+        sizes.forEach(size => size.classList.remove('active')); // Remove 'active' class from all size elements
         event.target.classList.add('active');
     };
 
-    EcocmersCard.colors.forEach(color =>
-        color.addEventListener('click', changeColor)
-    );
+    colors.forEach(color => color.addEventListener('click', changeColor));
 
-    EcocmersCard.size.forEach(size =>
-        size.addEventListener('click', changeSize)
-    );
+    sizes.forEach(size => size.addEventListener('click', changeSize));
 
     const heightInfo = document
         .querySelector('.info')
